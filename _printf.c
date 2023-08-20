@@ -31,7 +31,7 @@ int _printf(const char *format, ...)
 				return (-1);
 			if (*format == 'c')
 			{
-				count += _char();
+				count += _char(arguments);
 			}
 			else if (*format == 's')
 			{
