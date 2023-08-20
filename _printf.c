@@ -1,15 +1,12 @@
 #include <unistd.h>
 #include <string.h>
 #include "main.h"
-
 /**
 * _printf - printf c and s format speciefiers
 * @format: modulo
 *
 * Return: count Success
 */
-
-
 int _printf(const char *format, ...)
 {
 	va_list arguments;
@@ -35,7 +32,6 @@ int _printf(const char *format, ...)
 
 				if (str == NULL)
 					str = "(null)";
-
 				count += write(1, str, strlen(str));
 			}
 			else if (*format == '%')
@@ -43,8 +39,10 @@ int _printf(const char *format, ...)
 				count += write(1, format, 1);
 			}
 			else
+			{
 				count += write(1, "%", 1);
 				count += write(1, format, 1);
+			}
 		}
 		else
 			count += write(1, format, 1);
