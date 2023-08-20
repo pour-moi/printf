@@ -35,6 +35,10 @@ int _printf(const char *format, ...)
 
 				count += write(1, str, strlen(str));
 			}
+			if (*format == '%')
+			{
+				count += write(1, format, 1);
+			}
 		}
 		else
 			count += write(1, format, 1);
