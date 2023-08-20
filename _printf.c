@@ -29,13 +29,16 @@ int _printf(const char *format, ...)
 
 				count += write(1, &arg, 1);
 			}
-			if (*format == 's')
+			else if (*format == 's')
 			{
 				char *str = va_arg(arguments, char *);
 
+				if (str == NULL)
+					str = "(null)";
+
 				count += write(1, str, strlen(str));
 			}
-			if (*format == '%')
+			else if (*format == '%')
 			{
 				count += write(1, format, 1);
 			}
