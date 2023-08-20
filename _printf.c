@@ -8,6 +8,15 @@ int _char(va_list arguments)
 
 	return (write(1, &arg, 1));
 }
+
+int _string(va_list arguments)
+{
+	char *str = va_arg(arguments, char *);
+
+	if (str == NULL)
+		str = "(null)";
+	return (write(1, str, strlen(str)));
+}
 /**
 * _printf - printf c and s format speciefiers
 * @format: modulo
@@ -35,11 +44,7 @@ int _printf(const char *format, ...)
 			}
 			else if (*format == 's')
 			{
-				char *str = va_arg(arguments, char *);
-
-				if (str == NULL)
-					str = "(null)";
-				count += write(1, str, strlen(str));
+				count += _string(arguments);
 			}
 			else if (*format == '%')
 			{
