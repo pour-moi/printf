@@ -6,7 +6,7 @@ int _char(va_list arguments)
 {
 	char arg = va_arg(arguments, int);
 
-	return (write(1, &ard, 1));
+	return (write(1, &arg, 1));
 }
 /**
 * _printf - printf c and s format speciefiers
@@ -31,7 +31,7 @@ int _printf(const char *format, ...)
 				return (-1);
 			if (*format == 'c')
 			{
-				count += _char(arguments);
+				count += _char();
 			}
 			else if (*format == 's')
 			{
