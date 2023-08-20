@@ -1,6 +1,13 @@
 #include <unistd.h>
 #include <string.h>
 #include "main.h"
+
+int _char(va_list arguments)
+{
+	char arg = va_arg(arguments, int);
+
+	return (write(1, &ard, 1));
+}
 /**
 * _printf - printf c and s format speciefiers
 * @format: modulo
@@ -24,9 +31,7 @@ int _printf(const char *format, ...)
 				return (-1);
 			if (*format == 'c')
 			{
-				char arg = va_arg(arguments, int);
-
-				count += write(1, &arg, 1);
+				count += _char(arguments);
 			}
 			else if (*format == 's')
 			{
