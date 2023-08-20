@@ -1,44 +1,12 @@
 #include <unistd.h>
 #include <string.h>
 #include "main.h"
-
-/**
-* _char - prints single character
-* @arguments: list to print
-*
-* Return: size
-*/
-
-int _char(va_list arguments)
-{
-	char arg = va_arg(arguments, int);
-
-	return (write(1, &arg, 1));
-}
-
-/**
-* _string - for single char
-* @arguments: lists
-*
-* Return: size
-*/
-
-int _string(va_list arguments)
-{
-	char *str = va_arg(arguments, char *);
-
-	if (str == NULL)
-		str = ("null");
-	return (write(1, str, strlen(str)));
-}
-
 /**
 * _printf - printf c and s format speciefiers
 * @format: modulo
 *
 * Return: count Success
 */
-
 int _printf(const char *format, ...)
 {
 	va_list arguments;
@@ -56,15 +24,21 @@ int _printf(const char *format, ...)
 				return (-1);
 			if (*format == 'c')
 			{
-				count += _char(arguments);
+				char arg = va_arg(arguments, int);
+
+				count += write(1, &arg, 1);
 			}
 			else if (*format == 's')
 			{
-				count += _string(arguments);
+				char *str = va_arg(arguments, char *);
+
+				if (str == NULL)
+					str = "(null)";
+				count += write(1, str, strlen(str));
 			}
 			else if (*format == '%')
 			{
-				count += write(1, "%", 1);
+				count += write(1, format, 1);
 			}
 			else
 			{
