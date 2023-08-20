@@ -2,6 +2,12 @@
 #include <string.h>
 #include "main.h"
 
+/**
+ * _char - prints single character
+ * @arguments: lists to pass
+ *
+ * Return: size
+ */
 int _char(va_list arguments)
 {
 	char arg = va_arg(arguments, int);
@@ -9,6 +15,12 @@ int _char(va_list arguments)
 	return (write(1, &arg, 1));
 }
 
+/**
+ * _string - prints more than single character
+ * @arguments: lists to pass
+ *
+ * Return: size
+ */
 int _string(va_list arguments)
 {
 	char *str = va_arg(arguments, char *);
@@ -17,6 +29,7 @@ int _string(va_list arguments)
 		str = "(null)";
 	return (write(1, str, strlen(str)));
 }
+
 /**
 * _printf - printf c and s format speciefiers
 * @format: modulo
