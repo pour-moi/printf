@@ -1,5 +1,6 @@
 #include <unistd.h>
 #include <string.h>
+#include <stdio.h>
 #include "main.h"
 
 /**
@@ -28,6 +29,15 @@ int _string(va_list arguments)
 	if (str == NULL)
 		str = "(null)";
 	return (write(1, str, strlen(str)));
+}
+
+int _int(va_list arguments)
+{
+	int i = va_arg(arguments, int);
+	char buffer[32];
+
+	snprintf(buffer, 32, "%d", i);
+	return (write(1, buffer, strlen(buffer)));
 }
 
 /**
@@ -62,6 +72,10 @@ int _printf(const char *format, ...)
 			else if (*format == '%')
 			{
 				count += write(1, format, 1);
+			}
+			else if (*format == 'd' || *format == 'i')
+			{
+				count += _int(arguments);
 			}
 			else
 			{
