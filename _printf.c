@@ -46,6 +46,11 @@ int *_binary(va_list arguments)
 	static int bin[32];
 	int i = 0;
 
+	if (binary < 0)
+	{
+		return (-1);
+	}
+
 	while (binary > 0)
 	{
 		bin[i] = (binary % 2) + '0';
