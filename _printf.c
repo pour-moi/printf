@@ -42,7 +42,7 @@ int _int(va_list arguments)
 
 int *_binary(va_list arguments)
 {
-	int binary = va_arg(arguments, int);
+	unsigned int binary = va_arg(arguments, int);
 	static int bin[32];
 	int i = 0;
 
