@@ -7,7 +7,7 @@
  *
  * Return: binary number
  */
-int* _binary(va_list arguments)
+int *_binary(va_list arguments)
 {
 	int binary = va_arg(arguments, int);
 	static int bin[32];
