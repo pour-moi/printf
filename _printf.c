@@ -40,6 +40,25 @@ int _int(va_list arguments)
 	return (write(1, buffer, strlen(buffer)));
 }
 
+int *_binary(va_list arguments)
+{
+	int binary = va_arg(arguments, int);
+	static int bin[32];
+	int i = 0;
+
+	while (binary > 0)
+	{
+		bin[i] = (binary % 2) + '0';
+		binary /= 2;
+		i++;
+	}
+	while (i > 0)
+	{
+		i--;
+		(write(1, &bin[i], 1));
+	}
+	return (bin);
+}
 /**
 * _printf - printf c and s format speciefiers
 * @format: modulo
@@ -64,6 +83,10 @@ int _printf(const char *format, ...)
 			if (*format == 'c')
 			{
 				count += _char(arguments);
+			}
+			else if (*format == 'b')
+			{
+				_binary(arguments);
 			}
 			else if (*format == 's')
 			{
