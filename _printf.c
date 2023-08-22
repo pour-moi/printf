@@ -1,115 +1,51 @@
-#include <unistd.h>
-#include <string.h>
-#include <stdio.h>
 #include "main.h"
 
 /**
- * _char - prints single character
- * @arguments: lists to pass
+ * _printf - formatted output conversion and print data.
+ * @format: input string.
  *
- * Return: size
+ * Return: number of chars printed.
  */
-int _char(va_list arguments)
-{
-	char arg = va_arg(arguments, int);
-
-	return (write(1, &arg, 1));
-}
-
-/**
- * _string - prints more than single character
- * @arguments: lists to pass
- *
- * Return: size
- */
-int _string(va_list arguments)
-{
-	char *str = va_arg(arguments, char *);
-
-	if (str == NULL)
-		str = "(null)";
-	return (write(1, str, strlen(str)));
-}
-
-int _int(va_list arguments)
-{
-	int i = va_arg(arguments, int);
-	char buffer[32];
-
-	snprintf(buffer, 32, "%d", i);
-	return (write(1, buffer, strlen(buffer)));
-}
-
-int *_binary(va_list arguments)
-{
-	unsigned int binary = va_arg(arguments, int);
-	static int bin[32];
-	int i = 0;
-
-	while (binary > 0)
-	{
-		bin[i] = (binary % 2) + '0';
-		binary /= 2;
-		i++;
-	}
-	while (i > 0)
-	{
-		i--;
-		(write(1, &bin[i], 1));
-	}
-	return (bin);
-}
-/**
-* _printf - printf c and s format speciefiers
-* @format: modulo
-*
-* Return: count Success
-*/
 int _printf(const char *format, ...)
 {
+	unsigned int i = 0, len = 0, ibuf = 0;
 	va_list arguments;
-	int count = 0;
+	int (*function)(va_list, char *, unsigned int);
+	char *buffer;
 
-	va_start(arguments, format);
-	if (format == NULL)
+	va_start(arguments, format), buffer = malloc(sizeof(char) * 1024);
+	if (!format || !buffer || (format[i] == '%' && !format[i + 1]))
 		return (-1);
-	while (*format)
+	if (!format[i])
+		return (0);
+	for (i = 0; format && format[i]; i++)
 	{
-		if (*format == '%')
+		if (format[i] == '%')
 		{
-			format++;
-			if (*format == '\0')
+			if (format[i + 1] == '\0')
+			{	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
 				return (-1);
-			if (*format == 'c')
-			{
-				count += _char(arguments);
-			}
-			else if (*format == 'b')
-			{
-				_binary(arguments);
-			}
-			else if (*format == 's')
-			{
-				count += _string(arguments);
-			}
-			else if (*format == '%')
-			{
-				count += write(1, format, 1);
-			}
-			else if (*format == 'd' || *format == 'i')
-			{
-				count += _int(arguments);
 			}
 			else
-			{
-				count += write(1, "%", 1);
-				count += write(1, format, 1);
-			}
+			{	function = get_print_func(format, i + 1);
+				if (function == NULL)
+				{
+					if (format[i + 1] == ' ' && !format[i + 2])
+						return (-1);
+					handl_buf(buffer, format[i], ibuf), len++, i--;
+				}
+				else
+				{
+					len += function(arguments, buffer, ibuf);
+					i += ev_print_func(format, i + 1);
+				}
+			} i++;
 		}
 		else
-			count += write(1, format, 1);
-		format++;
+			handl_buf(buffer, format[i], ibuf), len++;
+		for (ibuf = len; ibuf > 1024; ibuf -= 1024)
+			;
 	}
-	va_end(arguments);
-	return (count);
+	print_buf(buffer, ibuf), free(buffer), va_end(arguments);
+	return (len);
 }
